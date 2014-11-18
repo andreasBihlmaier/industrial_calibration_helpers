@@ -1,0 +1,26 @@
+<launch>
+
+  <!-- Launch service which is called to to indicate scene is ready   -->
+  <node pkg="industrial_extrinsic_cal" type="trigger_service" name="rosSceneTrigger" output="screen" />
+
+  <!-- Adjust this for your actual setup -->
+  <node pkg="tf" type="static_transform_publisher"
+                 name="target_frame"
+                 args="1.2 0.0 0.0  -1.57079 0.0 1.57079 world_frame target_frame 100" />
+
+  <!-- *_optical_frame with same origin as *_link, but using OpenCV convention (z = forward) instead of ROS convention (x = forward) -->
+  <node pkg="tf" type="static_transform_publisher" name="logitech_c910_optical_frame" 
+                 args="0.0 0.0 0.0  -1.57079 0.0 -1.57079 logitech_c910_link logitech_c910_optical_frame 100" /> 
+
+  <node pkg="industrial_extrinsic_cal" type="service_node" name="calibration_service_node" output="screen" >
+    <param name="yaml_file_path" value="$(find webcam_tutorial)/yaml/" />
+    <rosparam>
+      camera_file: "camera.yaml"
+      target_file: "target.yaml"
+      cal_job_file: "caljob.yaml"
+      store_results_package_name: "webcam_tutorial"
+      store_results_file_name: "world_to_logitech_c910_tf_broadcaster.launch"
+    </rosparam>
+  </node>
+
+</launch>
