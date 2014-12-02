@@ -14,7 +14,7 @@ from generate_common import *
 
 ppi = 300
 size2pixels = ppi * (1.0 / 0.0254)
-coords_color = (170, 170, 170)
+coords_color = (180, 180, 180)
 
 def drawText(image, point, text):
   fontFace = cv2.FONT_HERSHEY_PLAIN
@@ -81,6 +81,7 @@ def main():
            coords_color,
            3)
   drawText(img, (origin_px[0] + 30, int(origin_px[1] + (rows - 1) * grid_px[1] - (grid_px[1])/2)), "Y")
+  drawText(img, m2px((size_m[1]/2, 0.005)), "%s  circle=%s grid=%s" % (args.size, args.circle, args.grid))
 
   tmpfile = '/tmp/circlegrid.png'
   cv2.imwrite(tmpfile, img)
