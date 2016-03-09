@@ -33,7 +33,7 @@ def main():
   parser.add_argument('filename', help='Output PDF file')
   args = parser.parse_args()
 
-  size_m = (0.29701, 0.20997) # A4 portrait
+  size_m = (0.20997, 0.29701) # A4 landscape
   square_m = float(args.square)
   offset_m = 0.012, 0.01
   gridsize = string2int_list(args.size, 'x')
@@ -47,10 +47,12 @@ def main():
 
   rows, cols = gridsize[0], gridsize[1]
   square_positions = []
-  for row in range(rows): # x
-    for col in range(cols): # y
+  actual_rows = rows + 1
+  actual_cols = cols + 1
+  for row in range(actual_rows): # x
+    for col in range(actual_cols): # y
       actual_row = 2 * row + (col % 2)
-      if actual_row >= rows:
+      if actual_row >= actual_rows:
         continue
       square_position_m = (offset_m[0] + col * square_m, offset_m[1] + actual_row * square_m)
       square_positions.append(square_position_m)
@@ -58,7 +60,7 @@ def main():
       print('%d %d: %f %f [m] %d %d [px]' % (row, col, square_position_m[0], square_position_m[1], square_position_px[0], square_position_px[1]))
       img[square_position_px[0]:(square_position_px[0]+square_px), square_position_px[1]:(square_position_px[1]+square_px)] = 0
 
-  drawText(img, m2px((size_m[1]/2, 0.0075)), "%dx%d  square=%s" % (gridsize[0] - 1, gridsize[1] - 1, args.square))
+  drawText(img, m2px((size_m[1]/2, 0.0075)), "%dx%d  square=%s" % (gridsize[0], gridsize[1], args.square))
 
   tmpfile = '/tmp/chessboard_pattern.png'
   cv2.imwrite(tmpfile, img)
