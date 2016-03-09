@@ -25,25 +25,6 @@ import numpy as np
 from generate_common import *
 
 
-
-ppi = 300
-size2pixels = ppi * (1.0 / 0.0254)
-coords_color = (180, 180, 180)
-
-def drawText(image, point, text):
-  fontFace = cv2.FONT_HERSHEY_PLAIN
-  fontScale = 4
-  thickness = 2
-  textSize, baseline = cv2.getTextSize(text, fontFace, fontScale, thickness)
-  baseline += thickness
-  text_origin = (point[0] - textSize[0]/2, point[1] + textSize[1]/2);
-  cv2.putText(image, text, text_origin, fontFace, fontScale, coords_color, thickness)
-
-
-def m2px(point_m):
-  return tuple(int(p * size2pixels) for p in point_m)
-
-
 def main():
   parser = argparse.ArgumentParser()
   parser.add_argument('size', help='Size of circlegrid, e.g. 8x6')
